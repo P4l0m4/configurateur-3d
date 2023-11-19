@@ -10,7 +10,10 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "ress": "^5.0.2"
+    "ress": "^5.0.2",
+    "gsap": "^3.12.2",
+    "lil-gui": "^0.19.1",
+    "three": "^0.158.0"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
