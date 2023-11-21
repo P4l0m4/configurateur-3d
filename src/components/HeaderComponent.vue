@@ -7,7 +7,11 @@ let modelChosen = ref("microphone");
 defineEmits(["model"]);
 </script>
 <template>
-  <header class="header">
+  <header
+    class="header"
+    @click.self="isNavOpen = false"
+    :class="{ opened: isNavOpen === true }"
+  >
     <nav class="header__nav" v-if="isNavOpen">
       <button
         class="header__nav__button"
@@ -36,14 +40,16 @@ defineEmits(["model"]);
 <style lang="scss">
 .header {
   position: absolute;
-  bottom: 2rem;
-  right: 2rem;
+  padding: 0 2rem 2rem 0;
   z-index: 1;
-  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: flex-end;
   gap: 2rem;
+  right: 0;
+  bottom: 0;
+
   &__burger {
     cursor: pointer;
     width: 2rem;
@@ -61,6 +67,7 @@ defineEmits(["model"]);
     gap: 1rem;
 
     &__button {
+      text-shadow: black 0px 0px 2px;
       display: flex;
       background-color: transparent;
       border-radius: 20px;
@@ -78,5 +85,9 @@ defineEmits(["model"]);
 }
 .selected {
   background-color: rgba(255, 255, 255, 0.1);
+}
+.opened {
+  width: 100%;
+  height: 100%;
 }
 </style>
