@@ -1,6 +1,5 @@
-<script setup></script>
-
 <template>
+  <HeaderComponent />
   <main>
     <slot />
   </main>

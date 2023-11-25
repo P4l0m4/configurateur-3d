@@ -2,9 +2,6 @@
 import { ref } from "vue";
 
 let isNavOpen = ref(false);
-let modelChosen = ref("microphone");
-
-defineEmits(["model"]);
 </script>
 <template>
   <header
@@ -13,26 +10,19 @@ defineEmits(["model"]);
     :class="{ opened: isNavOpen === true }"
   >
     <nav class="header__nav" v-if="isNavOpen">
-      <button
-        class="header__nav__button"
-        @click="$emit('model', 'microphone'), (modelChosen = 'microphone')"
-        :class="{ selected: modelChosen === 'microphone' }"
+      <NuxtLink to="/" class="header__nav__button" exact>Microphone</NuxtLink>
+      <NuxtLink to="/damaged-helmet" class="header__nav__button" exact
+        >Helmet</NuxtLink
       >
-        Microphone
-      </button>
-      <button
-        class="header__nav__button"
-        @click="$emit('model', 'helmet'), (modelChosen = 'helmet')"
-        :class="{ selected: modelChosen === 'helmet' }"
+      <NuxtLink to="/thermometer" class="header__nav__button" exact
+        >Thermometer</NuxtLink
       >
-        Helmet
-      </button>
     </nav>
 
     <img
       class="header__burger"
       src="@/assets/icons/burger.svg"
-      alt=""
+      alt="icone burger"
       @click="isNavOpen = !isNavOpen"
     />
   </header>
@@ -83,11 +73,11 @@ defineEmits(["model"]);
     }
   }
 }
-.selected {
+.exact-active-link {
   background-color: rgba(255, 255, 255, 0.1);
 }
 .opened {
-  width: 100%;
-  height: 100%;
+  // width: 100%;
+  // height: 100%;
 }
 </style>
