@@ -329,7 +329,7 @@ function lookAtPoints(x, y, z) {
       duration: 2,
       x: x / 2,
       y: y,
-      z: z * 2,
+      z: Math.abs(z) / -2,
     });
 
     zoomToggle.value = true;
