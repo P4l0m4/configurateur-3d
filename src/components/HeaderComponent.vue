@@ -11,9 +11,7 @@ let isNavOpen = ref(false);
   >
     <nav class="header__nav" v-if="isNavOpen">
       <NuxtLink to="/" class="header__nav__button" exact>Microphone</NuxtLink>
-      <NuxtLink to="/damaged-helmet" class="header__nav__button" exact
-        >Helmet</NuxtLink
-      >
+      <NuxtLink to="/helmet" class="header__nav__button" exact>Helmet</NuxtLink>
       <NuxtLink to="/thermometer" class="header__nav__button" exact
         >Thermometer</NuxtLink
       >
