@@ -152,7 +152,7 @@ onMounted(() => {
       element: document.querySelector(".point-0"),
     },
     {
-      position: new THREE.Vector3(-0.64659, 1.6767, -0.21635),
+      position: new THREE.Vector3(-0.81869, 1.59066, -0.47449),
       element: document.querySelector(".point-1"),
     },
     {
@@ -160,7 +160,7 @@ onMounted(() => {
       element: document.querySelector(".point-2"),
     },
     {
-      position: new THREE.Vector3(0.55808, -1.16288, 0.21389),
+      position: new THREE.Vector3(0.55808, -1.16288, 0.38598),
       element: document.querySelector(".point-3"),
     },
     {
