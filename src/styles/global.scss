@@ -168,6 +168,16 @@ details > summary::-webkit-details-marker /* Safari */ {
   display: none;
 }
 
+.dezoom {
+  display: none;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+}
+.dezoomVisible {
+  display: block;
+}
+
 //THREEJS MODELS
 .webgl {
   position: fixed;

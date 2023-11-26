@@ -313,19 +313,38 @@ onMounted(() => {
 
   tick();
 });
-
+let zoomToggle = ref(false);
 function lookAtPoints(x, y, z) {
-  camera.value.zoom = 1;
-  camera.value.updateProjectionMatrix();
   const target = new THREE.Vector3(x, y, z);
   controls.value.target = target;
-  camera.value.zoom = 2;
-  camera.value.updateProjectionMatrix();
+
+  if (zoomToggle.value === false) {
+    gsap.to(camera.value.position, {
+      duration: 2,
+      x: x * 3,
+      y: y,
+      z: z * 3,
+    });
+
+    zoomToggle.value = true;
+  } else if (zoomToggle.value === true) {
+    gsap.to(camera.value.position, {
+      duration: 2,
+      x: 4,
+      y: 1,
+      z: -4,
+    });
+    zoomToggle.value = false;
+  }
 }
 </script>
 <template>
   <canvas class="webgl"></canvas>
-
+  <div
+    @click="lookAtPoints(0, 0, 0)"
+    class="dezoom"
+    :class="{ dezoomVisible: zoomToggle === true }"
+  ></div>
   <div class="loading-bar"></div>
 
   <div
