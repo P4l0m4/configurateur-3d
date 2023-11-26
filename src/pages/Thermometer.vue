@@ -316,7 +316,13 @@ onMounted(() => {
 let zoomToggle = ref(false);
 function lookAtPoints(x, y, z) {
   const target = new THREE.Vector3(x, y, z);
-  controls.value.target = target;
+  // controls.value.target = target;
+  gsap.to(controls.value.target, {
+    duration: 2,
+    x: target.x,
+    y: target.y,
+    z: target.z,
+  });
 
   if (zoomToggle.value === false) {
     gsap.to(camera.value.position, {
@@ -350,11 +356,12 @@ function lookAtPoints(x, y, z) {
   <div
     class="point point-3"
     @click="
-      lookAtPoints(
-        points[3].position.x,
-        points[3].position.y,
-        points[3].position.z
-      )
+      (zoomToggle = false),
+        lookAtPoints(
+          points[3].position.x,
+          points[3].position.y,
+          points[3].position.z
+        )
     "
   >
     <div class="label">
@@ -371,11 +378,12 @@ function lookAtPoints(x, y, z) {
   <div
     class="point point-4"
     @click="
-      lookAtPoints(
-        points[4].position.x,
-        points[4].position.y,
-        points[4].position.z
-      )
+      (zoomToggle = false),
+        lookAtPoints(
+          points[4].position.x,
+          points[4].position.y,
+          points[4].position.z
+        )
     "
   >
     <div class="label">
@@ -392,11 +400,12 @@ function lookAtPoints(x, y, z) {
   <div
     class="point point-2"
     @click="
-      lookAtPoints(
-        points[2].position.x,
-        points[2].position.y,
-        points[2].position.z
-      )
+      (zoomToggle = false),
+        lookAtPoints(
+          points[2].position.x,
+          points[2].position.y,
+          points[2].position.z
+        )
     "
   >
     <div class="label">
@@ -409,11 +418,12 @@ function lookAtPoints(x, y, z) {
   <div
     class="point point-1"
     @click="
-      lookAtPoints(
-        points[1].position.x,
-        points[1].position.y,
-        points[1].position.z
-      )
+      (zoomToggle = false),
+        lookAtPoints(
+          points[1].position.x,
+          points[1].position.y,
+          points[1].position.z
+        )
     "
   >
     <div class="label">
