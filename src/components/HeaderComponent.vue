@@ -73,7 +73,7 @@ let isNavOpen = ref(false);
     }
   }
 }
-.exact-active-link {
+.router-link-exact-active {
   background-color: rgba(255, 255, 255, 0.1);
 }
 .opened {

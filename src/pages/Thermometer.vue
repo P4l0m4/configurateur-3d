@@ -2,7 +2,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 
 import { gsap } from "gsap";
 // import GUI from "lil-gui";
@@ -19,7 +18,7 @@ const controls = ref();
 import { onMounted, ref } from "vue";
 onMounted(() => {
   //DEBUG
-  //   const gui = new GUI();
+  // const gui = new GUI();
 
   /**
    * Loaders
@@ -58,11 +57,6 @@ onMounted(() => {
 
   //IMAGE LOADER
   const textureLoader = new THREE.TextureLoader(loadingManager);
-
-  //HDRI only
-  //   const cubeTextureLoader = new THREE.CubeTextureLoader(loadingManager);
-
-  //   const rgbeLoader = new RGBELoader(loadingManager);
 
   /**
    * Base
@@ -123,30 +117,6 @@ onMounted(() => {
    * Environment maps
    */
 
-  //   const environmentMap = cubeTextureLoader.load([
-  //     `/textures/environmentMaps/${1}/px.jpg`,
-  //     `/textures/environmentMaps/${1}/nx.jpg`,
-  //     `/textures/environmentMaps/${1}/py.jpg`,
-  //     `/textures/environmentMaps/${1}/ny.jpg`,
-  //     `/textures/environmentMaps/${1}/pz.jpg`,
-  //     `/textures/environmentMaps/${1}/nz.jpg`,
-  //   ]);
-
-  //   environmentMap.colorSpace = THREE.SRGBColorSpace;
-
-  //   scene.background = environmentMap;
-  //   scene.environment = environmentMap;
-
-  //HDRI (don't use, too heavy)
-  //   rgbeLoader.load(
-  //     "/textures/environmentMaps/hdri/cyberpunk1.hdr",
-  //     (environmentMap) => {
-  //       environmentMap.mapping = THREE.EquirectangularReflectionMapping;
-  //       scene.background = environmentMap;
-  //       scene.environment = environmentMap;
-  //     }
-  //   );
-
   //LDR
 
   const environmentMap = textureLoader.load(
@@ -162,13 +132,6 @@ onMounted(() => {
   /**
    * Models
    */
-  //   gltfLoader.load("/models/DamagedHelmet/glTF/DamagedHelmet.gltf", (gltf) => {
-  //     gltf.scene.scale.set(2.5, 2.5, 2.5);
-  //     gltf.scene.rotation.y = Math.PI * 0.5;
-  //     scene.add(gltf.scene);
-
-  //     updateAllMaterials();
-  //   });
 
   gltfLoader.load("/models/Thermometer/thermometer.gltf", (gltf) => {
     gltf.scene.scale.set(2.5, 2.5, 2.5);
@@ -185,55 +148,51 @@ onMounted(() => {
 
   points.value = [
     {
-      position: new THREE.Vector3(-0.47449, 0.73983, -0.73264),
+      position: new THREE.Vector3(-0.47449, 0.73983, -0.38845),
       element: document.querySelector(".point-0"),
     },
     {
-      position: new THREE.Vector3(-2.02336, 0.6018, -2.19545),
+      position: new THREE.Vector3(-0.64659, 1.6767, -0.21635),
       element: document.querySelector(".point-1"),
     },
     {
-      position: new THREE.Vector3(-2.88384, -0.17148, -2.88384),
+      position: new THREE.Vector3(-1.50707, 1.93485, -0.90473),
       element: document.querySelector(".point-2"),
     },
     {
-      position: new THREE.Vector3(1.93485, 0.04978, 1.24646),
+      position: new THREE.Vector3(0.55808, -1.16288, 0.21389),
       element: document.querySelector(".point-3"),
     },
     {
-      position: new THREE.Vector3(2.96742, 0.12784, 2.62323),
+      position: new THREE.Vector3(2.0209, -2.53965, 1.59066),
       element: document.querySelector(".point-4"),
     },
-    // {
-    //   position: new THREE.Vector3(-0.02397, -2.4579, 1.59865),
-    //   element: document.querySelector(".point-5"),
-    // },
   ];
 
   //GUI DEBUG FOR POINTS POSITION
 
-  //   for (let i = 0; i < points.length; i++) {
-  //     gui
-  //       .add(points[i].position, "x")
-  //       .min(-3)
-  //       .max(4)
-  //       .step(0.00001)
-  //       .name("Point " + (i + 1) + " - X axis");
+  // for (let i = 0; i < points.value.length; i++) {
+  //   gui
+  //     .add(points.value[i].position, "x")
+  //     .min(-3)
+  //     .max(4)
+  //     .step(0.00001)
+  //     .name("Point " + (i + 1) + " - X axis");
 
-  //     gui
-  //       .add(points[i].position, "y")
-  //       .min(-3)
-  //       .max(4)
-  //       .step(0.00001)
-  //       .name("Point " + (i + 1) + " - Y axis");
+  //   gui
+  //     .add(points.value[i].position, "y")
+  //     .min(-3)
+  //     .max(4)
+  //     .step(0.00001)
+  //     .name("Point " + (i + 1) + " - Y axis");
 
-  //     gui
-  //       .add(points[i].position, "z")
-  //       .min(-3)
-  //       .max(4)
-  //       .step(0.00001)
-  //       .name("Point " + (i + 1) + " - Z axis");
-  //   }
+  //   gui
+  //     .add(points.value[i].position, "z")
+  //     .min(-3)
+  //     .max(4)
+  //     .step(0.00001)
+  //     .name("Point " + (i + 1) + " - Z axis");
+  // }
 
   /**
    * Lights
@@ -351,26 +310,17 @@ onMounted(() => {
   tick();
 });
 
-function lookAtPoints(x, y, z) {
-  const target = new THREE.Vector3(x, y, z);
-  controls.value.target = target;
-}
+// function lookAtPoints(x, y, z) {
+//   const target = new THREE.Vector3(x, y, z);
+//   controls.value.target = target;
+// }
 </script>
 <template>
   <canvas class="webgl"></canvas>
 
   <div class="loading-bar"></div>
 
-  <div
-    class="point point-3"
-    @click="
-      lookAtPoints(
-        points[3].position.x,
-        points[3].position.y,
-        points[3].position.z
-      )
-    "
-  >
+  <div class="point point-3">
     <div class="label">
       <img
         class="label__icon"
@@ -382,16 +332,7 @@ function lookAtPoints(x, y, z) {
       Flexible and soft probe, provides added comfort during insertion.
     </p>
   </div>
-  <div
-    class="point point-4"
-    @click="
-      lookAtPoints(
-        points[4].position.x,
-        points[4].position.y,
-        points[4].position.z
-      )
-    "
-  >
+  <div class="point point-4">
     <div class="label">
       <img
         class="label__icon"
@@ -403,16 +344,7 @@ function lookAtPoints(x, y, z) {
       The tip, inserted into the rectum to accurately measure body temperature.
     </p>
   </div>
-  <div
-    class="point point-2"
-    @click="
-      lookAtPoints(
-        points[2].position.x,
-        points[2].position.y,
-        points[2].position.z
-      )
-    "
-  >
+  <div class="point point-2">
     <div class="label">
       <img class="label__icon" src="@/assets/icons/charger.svg" alt="icone" />
     </div>
@@ -420,16 +352,7 @@ function lookAtPoints(x, y, z) {
       Battery compartment, allows for quick and easy battery changes.
     </p>
   </div>
-  <div
-    class="point point-1"
-    @click="
-      lookAtPoints(
-        points[1].position.x,
-        points[1].position.y,
-        points[1].position.z
-      )
-    "
-  >
+  <div class="point point-1">
     <div class="label">
       <img
         class="label__icon"
@@ -442,16 +365,7 @@ function lookAtPoints(x, y, z) {
       on and off.
     </p>
   </div>
-  <div
-    class="point point-0"
-    @click="
-      lookAtPoints(
-        points[0].position.x,
-        points[0].position.y,
-        points[0].position.z
-      )
-    "
-  >
+  <div class="point point-0">
     <div class="label">
       <img
         class="label__icon"
