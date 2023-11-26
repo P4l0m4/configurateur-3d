@@ -310,17 +310,26 @@ onMounted(() => {
   tick();
 });
 
-// function lookAtPoints(x, y, z) {
-//   const target = new THREE.Vector3(x, y, z);
-//   controls.value.target = target;
-// }
+function lookAtPoints(x, y, z) {
+  const target = new THREE.Vector3(x, y, z);
+  controls.value.target = target;
+}
 </script>
 <template>
   <canvas class="webgl"></canvas>
 
   <div class="loading-bar"></div>
 
-  <div class="point point-3">
+  <div
+    class="point point-3"
+    @click="
+      lookAtPoints(
+        points[3].position.x,
+        points[3].position.y,
+        points[3].position.z
+      )
+    "
+  >
     <div class="label">
       <img
         class="label__icon"
@@ -332,7 +341,16 @@ onMounted(() => {
       Flexible and soft probe, provides added comfort during insertion.
     </p>
   </div>
-  <div class="point point-4">
+  <div
+    class="point point-4"
+    @click="
+      lookAtPoints(
+        points[4].position.x,
+        points[4].position.y,
+        points[4].position.z
+      )
+    "
+  >
     <div class="label">
       <img
         class="label__icon"
@@ -344,7 +362,16 @@ onMounted(() => {
       The tip, inserted into the rectum to accurately measure body temperature.
     </p>
   </div>
-  <div class="point point-2">
+  <div
+    class="point point-2"
+    @click="
+      lookAtPoints(
+        points[2].position.x,
+        points[2].position.y,
+        points[2].position.z
+      )
+    "
+  >
     <div class="label">
       <img class="label__icon" src="@/assets/icons/charger.svg" alt="icone" />
     </div>
@@ -352,7 +379,16 @@ onMounted(() => {
       Battery compartment, allows for quick and easy battery changes.
     </p>
   </div>
-  <div class="point point-1">
+  <div
+    class="point point-1"
+    @click="
+      lookAtPoints(
+        points[1].position.x,
+        points[1].position.y,
+        points[1].position.z
+      )
+    "
+  >
     <div class="label">
       <img
         class="label__icon"
@@ -365,7 +401,16 @@ onMounted(() => {
       on and off.
     </p>
   </div>
-  <div class="point point-0">
+  <div
+    class="point point-0"
+    @click="
+      lookAtPoints(
+        points[0].position.x,
+        points[0].position.y,
+        points[0].position.z
+      )
+    "
+  >
     <div class="label">
       <img
         class="label__icon"
