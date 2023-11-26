@@ -15,6 +15,8 @@ const scene = new THREE.Scene();
 
 const controls = ref();
 
+let camera = ref();
+
 import { onMounted, ref } from "vue";
 onMounted(() => {
   //DEBUG
@@ -219,8 +221,8 @@ onMounted(() => {
     sizes.height = window.innerHeight;
 
     // Update camera
-    camera.aspect = sizes.width / sizes.height;
-    camera.updateProjectionMatrix();
+    camera.value.aspect = sizes.width / sizes.height;
+    camera.value.updateProjectionMatrix();
 
     // Update renderer
     renderer.setSize(sizes.width, sizes.height);
@@ -231,17 +233,17 @@ onMounted(() => {
    * Camera
    */
   // Base camera
-  const camera = new THREE.PerspectiveCamera(
+  camera.value = new THREE.PerspectiveCamera(
     75,
     sizes.width / sizes.height,
     0.1,
     100
   );
-  camera.position.set(4, 1, -4);
-  scene.add(camera);
+  camera.value.position.set(4, 1, -4);
+  scene.add(camera.value);
 
   //CONTROLS
-  controls.value = new OrbitControls(camera, canvas);
+  controls.value = new OrbitControls(camera.value, canvas);
   controls.value.enableDamping = true;
 
   /**
@@ -270,10 +272,10 @@ onMounted(() => {
         const screenPosition = point.position.clone();
 
         //PROJECT THE POINTS ON THE SCREEN
-        screenPosition.project(camera);
+        screenPosition.project(camera.value);
 
         //RAYCASTER IS POSITIONNED TO SHOOT FROM THE CAMERA TO THE POINTS
-        raycaster.setFromCamera(screenPosition, camera);
+        raycaster.setFromCamera(screenPosition, camera.value);
 
         //TEST IF THE RAYCASTER INTERSECTS WITH THE SCENE AND THE OBJECTS (children of the scene)
         const intersects = raycaster.intersectObjects(scene.children, true);
@@ -283,7 +285,9 @@ onMounted(() => {
           point.element.classList.add("visible");
         } else {
           const intersectionDistance = intersects[0].distance;
-          const pointDistance = point.position.distanceTo(camera.position);
+          const pointDistance = point.position.distanceTo(
+            camera.value.position
+          );
 
           if (intersectionDistance < pointDistance) {
             point.element.classList.remove("visible");
@@ -301,7 +305,7 @@ onMounted(() => {
     }
 
     // Render
-    renderer.render(scene, camera);
+    renderer.render(scene, camera.value);
 
     // Call tick again on the next frame
     window.requestAnimationFrame(tick);
@@ -311,8 +315,12 @@ onMounted(() => {
 });
 
 function lookAtPoints(x, y, z) {
+  camera.value.zoom = 1;
+  camera.value.updateProjectionMatrix();
   const target = new THREE.Vector3(x, y, z);
   controls.value.target = target;
+  camera.value.zoom = 2;
+  camera.value.updateProjectionMatrix();
 }
 </script>
 <template>
