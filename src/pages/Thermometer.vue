@@ -321,9 +321,9 @@ function lookAtPoints(x, y, z) {
   if (zoomToggle.value === false) {
     gsap.to(camera.value.position, {
       duration: 2,
-      x: x * 3,
+      x: x,
       y: y,
-      z: z * 3,
+      z: z * 2,
     });
 
     zoomToggle.value = true;
