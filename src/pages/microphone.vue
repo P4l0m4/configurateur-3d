@@ -2,30 +2,20 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 
 import { gsap } from "gsap";
 // import GUI from "lil-gui";
-const points = ref([]);
-
-const raycaster = new THREE.Raycaster();
-let sceneReady = false;
-
-// Scene
-const scene = new THREE.Scene();
-
-const controls = ref();
-
-let camera = ref();
 
 import { onMounted, ref } from "vue";
 onMounted(() => {
   //DEBUG
-  // const gui = new GUI();
+  //   const gui = new GUI();
 
   /**
    * Loaders
    */
-  // let sceneReady = false;
+  let sceneReady = false;
   const loadingBarElement = document.querySelector(".loading-bar");
   const loadingManager = new THREE.LoadingManager(
     // Loaded
@@ -60,6 +50,11 @@ onMounted(() => {
   //IMAGE LOADER
   const textureLoader = new THREE.TextureLoader(loadingManager);
 
+  //HDRI only
+  //   const cubeTextureLoader = new THREE.CubeTextureLoader(loadingManager);
+
+  //   const rgbeLoader = new RGBELoader(loadingManager);
+
   /**
    * Base
    */
@@ -68,6 +63,9 @@ onMounted(() => {
 
   // Canvas
   const canvas = document.querySelector("canvas.webgl");
+
+  // Scene
+  const scene = new THREE.Scene();
 
   /**
    * Overlay
@@ -119,10 +117,34 @@ onMounted(() => {
    * Environment maps
    */
 
+  //   const environmentMap = cubeTextureLoader.load([
+  //     `/textures/environmentMaps/${1}/px.jpg`,
+  //     `/textures/environmentMaps/${1}/nx.jpg`,
+  //     `/textures/environmentMaps/${1}/py.jpg`,
+  //     `/textures/environmentMaps/${1}/ny.jpg`,
+  //     `/textures/environmentMaps/${1}/pz.jpg`,
+  //     `/textures/environmentMaps/${1}/nz.jpg`,
+  //   ]);
+
+  //   environmentMap.colorSpace = THREE.SRGBColorSpace;
+
+  //   scene.background = environmentMap;
+  //   scene.environment = environmentMap;
+
+  //HDRI (don't use, too heavy)
+  //   rgbeLoader.load(
+  //     "/textures/environmentMaps/hdri/cyberpunk1.hdr",
+  //     (environmentMap) => {
+  //       environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+  //       scene.background = environmentMap;
+  //       scene.environment = environmentMap;
+  //     }
+  //   );
+
   //LDR
 
   const environmentMap = textureLoader.load(
-    "/textures/environmentMaps/hdri/cyberpunk4.webp"
+    "/textures/environmentMaps/hdri/cyberpunk2.webp"
   );
   environmentMap.mapping = THREE.EquirectangularReflectionMapping;
   environmentMap.colorSpace = THREE.SRGBColorSpace;
@@ -134,8 +156,15 @@ onMounted(() => {
   /**
    * Models
    */
+  //   gltfLoader.load("/models/DamagedHelmet/glTF/DamagedHelmet.gltf", (gltf) => {
+  //     gltf.scene.scale.set(2.5, 2.5, 2.5);
+  //     gltf.scene.rotation.y = Math.PI * 0.5;
+  //     scene.add(gltf.scene);
 
-  gltfLoader.load("/models/Thermometer/thermometer.gltf", (gltf) => {
+  //     updateAllMaterials();
+  //   });
+
+  gltfLoader.load("/models/microphone/glTF/scene.gltf", (gltf) => {
     gltf.scene.scale.set(2.5, 2.5, 2.5);
     gltf.scene.rotation.y = Math.PI * 0.5;
     scene.add(gltf.scene);
@@ -144,57 +173,89 @@ onMounted(() => {
   });
 
   //RAYCASTER
-  // const raycaster = new THREE.Raycaster();
+  const raycaster = new THREE.Raycaster();
 
   //POINTS
+  //DAMAGED HELMET POINTS
+  //   const points = [
+  //     {
+  //       position: new THREE.Vector3(1.70191, -0.14198, -0.28949),
+  //       element: document.querySelector(".point-0"),
+  //     },
+  //     {
+  //       position: new THREE.Vector3(0.5, 0.8, -1.6),
+  //       element: document.querySelector(".point-1"),
+  //     },
+  //     {
+  //       position: new THREE.Vector3(1.6, -1.3, -0.7),
+  //       element: document.querySelector(".point-2"),
+  //     },
+  //     {
+  //       position: new THREE.Vector3(-1.57284, 0.78, -1.72035),
+  //       element: document.querySelector(".point-3"),
+  //     },
+  //     {
+  //       position: new THREE.Vector3(-2.60586, 0.3448, 0.86109),
+  //       element: document.querySelector(".point-4"),
+  //     },
+  //     {
+  //       position: new THREE.Vector3(-0.4665, -1.64659, -0.09773),
+  //       element: document.querySelector(".point-5"),
+  //     },
+  //     ];
 
-  points.value = [
+  //MICROPHONE POINTS
+  const points = [
     {
-      position: new THREE.Vector3(-0.47449, 0.73983, -0.38845),
+      position: new THREE.Vector3(0.86109, 2.18869, 0.86109),
       element: document.querySelector(".point-0"),
     },
     {
-      position: new THREE.Vector3(-0.81869, 1.10066, -0.47449),
+      position: new THREE.Vector3(0.56607, 0.27105, 0.27105),
       element: document.querySelector(".point-1"),
     },
     {
-      position: new THREE.Vector3(-1.50707, 1.93485, -0.90473),
+      position: new THREE.Vector3(0.3448, -0.17148, -1.7941),
       element: document.querySelector(".point-2"),
     },
     {
-      position: new THREE.Vector3(0.55808, -1.16288, 0.38598),
+      position: new THREE.Vector3(-0.98279, -0.24524, 0.41856),
       element: document.querySelector(".point-3"),
     },
     {
-      position: new THREE.Vector3(2.0209, -2.53965, 1.59066),
+      position: new THREE.Vector3(-0.02397, -2.4579, 1.59865),
       element: document.querySelector(".point-4"),
     },
+    // {
+    //   position: new THREE.Vector3(-0.02397, -2.4579, 1.59865),
+    //   element: document.querySelector(".point-5"),
+    // },
   ];
 
   //GUI DEBUG FOR POINTS POSITION
 
-  // for (let i = 0; i < points.value.length; i++) {
-  //   gui
-  //     .add(points.value[i].position, "x")
-  //     .min(-3)
-  //     .max(4)
-  //     .step(0.00001)
-  //     .name("Point " + (i + 1) + " - X axis");
+  //   for (let i = 0; i < points.length; i++) {
+  //     gui
+  //       .add(points[i].position, "x")
+  //       .min(-3)
+  //       .max(3)
+  //       .step(0.00001)
+  //       .name("Point " + (i + 1) + " - X axis");
 
-  //   gui
-  //     .add(points.value[i].position, "y")
-  //     .min(-3)
-  //     .max(4)
-  //     .step(0.00001)
-  //     .name("Point " + (i + 1) + " - Y axis");
+  //     gui
+  //       .add(points[i].position, "y")
+  //       .min(-3)
+  //       .max(3)
+  //       .step(0.00001)
+  //       .name("Point " + (i + 1) + " - Y axis");
 
-  //   gui
-  //     .add(points.value[i].position, "z")
-  //     .min(-3)
-  //     .max(4)
-  //     .step(0.00001)
-  //     .name("Point " + (i + 1) + " - Z axis");
-  // }
+  //     gui
+  //       .add(points[i].position, "z")
+  //       .min(-3)
+  //       .max(3)
+  //       .step(0.00001)
+  //       .name("Point " + (i + 1) + " - Z axis");
+  //   }
 
   /**
    * Lights
@@ -221,8 +282,8 @@ onMounted(() => {
     sizes.height = window.innerHeight;
 
     // Update camera
-    camera.value.aspect = sizes.width / sizes.height;
-    camera.value.updateProjectionMatrix();
+    camera.aspect = sizes.width / sizes.height;
+    camera.updateProjectionMatrix();
 
     // Update renderer
     renderer.setSize(sizes.width, sizes.height);
@@ -233,18 +294,18 @@ onMounted(() => {
    * Camera
    */
   // Base camera
-  camera.value = new THREE.PerspectiveCamera(
+  const camera = new THREE.PerspectiveCamera(
     75,
     sizes.width / sizes.height,
     0.1,
     100
   );
-  camera.value.position.set(4, 1, -4);
-  scene.add(camera.value);
+  camera.position.set(4, 1, -4);
+  scene.add(camera);
 
-  //CONTROLS
-  controls.value = new OrbitControls(camera.value, canvas);
-  controls.value.enableDamping = true;
+  // Controls
+  const controls = new OrbitControls(camera, canvas);
+  controls.enableDamping = true;
 
   /**
    * Renderer
@@ -265,17 +326,17 @@ onMounted(() => {
    */
   const tick = () => {
     // Update controls
-    controls.value.update();
+    controls.update();
     if (sceneReady) {
       // Update points
-      for (const point of points.value) {
+      for (const point of points) {
         const screenPosition = point.position.clone();
 
         //PROJECT THE POINTS ON THE SCREEN
-        screenPosition.project(camera.value);
+        screenPosition.project(camera);
 
         //RAYCASTER IS POSITIONNED TO SHOOT FROM THE CAMERA TO THE POINTS
-        raycaster.setFromCamera(screenPosition, camera.value);
+        raycaster.setFromCamera(screenPosition, camera);
 
         //TEST IF THE RAYCASTER INTERSECTS WITH THE SCENE AND THE OBJECTS (children of the scene)
         const intersects = raycaster.intersectObjects(scene.children, true);
@@ -285,9 +346,7 @@ onMounted(() => {
           point.element.classList.add("visible");
         } else {
           const intersectionDistance = intersects[0].distance;
-          const pointDistance = point.position.distanceTo(
-            camera.value.position
-          );
+          const pointDistance = point.position.distanceTo(camera.position);
 
           if (intersectionDistance < pointDistance) {
             point.element.classList.remove("visible");
@@ -305,7 +364,7 @@ onMounted(() => {
     }
 
     // Render
-    renderer.render(scene, camera.value);
+    renderer.render(scene, camera);
 
     // Call tick again on the next frame
     window.requestAnimationFrame(tick);
@@ -313,151 +372,50 @@ onMounted(() => {
 
   tick();
 });
-let zoomToggle = ref(false);
-function lookAtPoints(x, y, z) {
-  const target = new THREE.Vector3(x, y, z);
-  // controls.value.target = target;
-  gsap.to(controls.value.target, {
-    duration: 2,
-    x: target.x,
-    y: target.y,
-    z: target.z,
-  });
-
-  if (zoomToggle.value === false) {
-    gsap.to(camera.value.position, {
-      duration: 2,
-      x: x / 2,
-      y: y,
-      z: Math.abs(z) / -2,
-    });
-
-    zoomToggle.value = true;
-  } else if (zoomToggle.value === true) {
-    gsap.to(camera.value.position, {
-      duration: 2,
-      x: 4,
-      y: 1,
-      z: -4,
-    });
-    zoomToggle.value = false;
-  }
-}
 </script>
 <template>
   <canvas class="webgl"></canvas>
-  <div
-    @click="lookAtPoints(0, 0, 0)"
-    class="dezoom"
-    :class="{ dezoomVisible: zoomToggle === true }"
-  ></div>
+
   <div class="loading-bar"></div>
 
-  <div
-    class="point point-3"
-    @click="
-      (zoomToggle = false),
-        lookAtPoints(
-          points[3].position.x,
-          points[3].position.y,
-          points[3].position.z
-        )
-    "
-  >
-    <div class="label">
-      <img
-        class="label__icon"
-        src="@/assets/icons/self_improvement.svg"
-        alt="icone"
-      />
-    </div>
+  <div class="point point-3">
+    <div class="label">4</div>
     <p class="text">
-      Flexible and soft probe, provides added comfort during insertion.
+      Lorem ipsum dolor sit amet, consequitur sit elit melasem.
     </p>
   </div>
-  <div
-    class="point point-4"
-    @click="
-      (zoomToggle = false),
-        lookAtPoints(
-          points[4].position.x,
-          points[4].position.y,
-          points[4].position.z
-        )
-    "
-  >
-    <div class="label">
-      <img
-        class="label__icon"
-        src="@/assets/icons/heat_pump_balance.svg"
-        alt="icone"
-      />
-    </div>
+  <div class="point point-4">
+    <div class="label">5</div>
     <p class="text">
-      The tip, inserted into the rectum to accurately measure body temperature.
+      Lorem ipsum dolor sit amet, consequitur sit elit melasem.
     </p>
   </div>
-  <div
-    class="point point-2"
-    @click="
-      (zoomToggle = false),
-        lookAtPoints(
-          points[2].position.x,
-          points[2].position.y,
-          points[2].position.z
-        )
-    "
-  >
-    <div class="label">
-      <img class="label__icon" src="@/assets/icons/charger.svg" alt="icone" />
-    </div>
+  <div class="point point-2">
+    <div class="label">3</div>
     <p class="text">
-      Battery compartment, allows for quick and easy battery changes.
+      Lorem ipsum dolor sit amet, consequitur sit elit melasem.
     </p>
   </div>
-  <div
-    class="point point-1"
-    @click="
-      (zoomToggle = false),
-        lookAtPoints(
-          points[1].position.x,
-          points[1].position.y,
-          points[1].position.z
-        )
-    "
-  >
-    <div class="label">
-      <img
-        class="label__icon"
-        src="@/assets/icons/power_settings_new.svg"
-        alt="icone"
-      />
-    </div>
+  <div class="point point-1">
+    <div class="label">2</div>
     <p class="text">
-      Power button, designed for easy manipulation during use to turn the device
-      on and off.
+      Lorem ipsum dolor sit amet, consequitur sit elit melasem.
     </p>
   </div>
-  <div
-    class="point point-0"
-    @click="
-      lookAtPoints(
-        points[0].position.x,
-        points[0].position.y,
-        points[0].position.z
-      )
-    "
-  >
-    <div class="label">
-      <img
-        class="label__icon"
-        src="@/assets/icons/browse_activity.svg"
-        alt="icone"
-      />
-    </div>
+  <div class="point point-0">
+    <div class="label">1</div>
     <p class="text">
-      The display, shows the temperature reading by providing a clear and
-      easy-to-read numerical value.
+      Lorem ipsum dolor sit amet, consequitur sit elit melasem.
     </p>
   </div>
+  <!-- <div class="point point-5">
+    <div class="label">6</div>
+    <p class="text">
+      Lorem ipsum dolor sit amet, consequitur sit elit melasem.
+    </p>
+  </div> -->
+
+  <!-- <button class="switch-environments" @click="switchEnvironments()">
+    Switch environments
+  </button> -->
 </template>

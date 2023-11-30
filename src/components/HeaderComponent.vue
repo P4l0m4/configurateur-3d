@@ -10,10 +10,10 @@ let isNavOpen = ref(false);
     :class="{ opened: isNavOpen === true }"
   >
     <nav class="header__nav" v-if="isNavOpen">
-      <NuxtLink to="/thermometer" class="header__nav__button" exact
-        >Thermometer</NuxtLink
+      <NuxtLink to="/" class="header__nav__button" exact>Thermometer</NuxtLink>
+      <NuxtLink to="/microphone" class="header__nav__button" exact
+        >Microphone</NuxtLink
       >
-      <NuxtLink to="/" class="header__nav__button" exact>Microphone</NuxtLink>
       <NuxtLink to="/helmet" class="header__nav__button" exact>Helmet</NuxtLink>
     </nav>
 
