@@ -2,22 +2,186 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-
 import { gsap } from "gsap";
+import { onMounted, ref } from "vue";
 // import GUI from "lil-gui";
-const points = ref([]);
 
+//NON THREEJS STUFF
+let selectedStripe = ref(1);
+let zoomToggle = ref(false);
+const points = ref([]);
 const raycaster = new THREE.Raycaster();
 let sceneReady = false;
-
+const showElements = ref(false);
 // Scene
 const scene = new THREE.Scene();
-
 const controls = ref();
+const camera = ref();
+const viewSelected = ref("custom");
 
-let camera = ref();
+function lookAtPoints(x, y, z) {
+  const target = new THREE.Vector3(x, y, z);
+  // controls.value.target = target;
+  gsap.to(controls.value.target, {
+    duration: 2,
+    x: target.x,
+    y: target.y,
+    z: target.z,
+  });
 
-import { onMounted, ref } from "vue";
+  if (zoomToggle.value === false) {
+    gsap.to(camera.value.position, {
+      duration: 2,
+      x: x / 2,
+      y: y,
+      z: Math.abs(z) / -2,
+    });
+    zoomToggle.value = true;
+  } else if (zoomToggle.value === true) {
+    gsap.to(camera.value.position, {
+      duration: 2,
+      x: 4,
+      y: 1,
+      z: -4,
+    });
+    zoomToggle.value = false;
+  }
+}
+//
+
+function changeView(stripeIndex) {
+  selectedStripe.value = stripeIndex;
+  zoomToggle.value = false;
+  if (stripeIndex === 1) {
+    viewSelected.value = "custom";
+
+    gsap.to(camera.value.position, {
+      duration: 2,
+      x: -3.5,
+      y: 0,
+      z: -4,
+    });
+    gsap.to(camera.value.rotation, {
+      duration: 2,
+      x: -3.141592653589793,
+      y: -0.7188299996216245,
+      z: -3.141592653589793,
+    });
+    gsap.to(controls.value.target, {
+      duration: 2,
+      x: 0,
+      y: 0,
+      z: 0,
+    });
+  } else if (stripeIndex === 2) {
+    viewSelected.value = "front";
+
+    gsap.to(camera.value.position, {
+      duration: 2,
+      x: 0,
+      y: 0,
+      z: 4,
+    });
+    gsap.to(camera.value.rotation, {
+      duration: 2,
+      x: 0,
+      y: 0,
+      z: 0,
+    });
+    gsap.to(controls.value.target, {
+      duration: 2,
+      x: 0,
+      y: 0,
+      z: 0,
+    });
+  } else if (stripeIndex === 3) {
+    viewSelected.value = "bottom";
+
+    gsap.to(camera.value.position, {
+      duration: 2,
+      x: 0,
+      y: -4,
+      z: 0,
+    });
+    gsap.to(camera.value.rotation, {
+      duration: 2,
+      x: -1.5707963267948966,
+      y: 0,
+      z: 0,
+    });
+    gsap.to(controls.value.target, {
+      duration: 2,
+      x: 0,
+      y: 0,
+      z: 0,
+    });
+  }
+}
+
+function resetZoom() {
+  zoomToggle.value = false;
+  if (viewSelected.value === "custom") {
+    gsap.to(camera.value.position, {
+      duration: 2,
+      x: -3.5,
+      y: 0,
+      z: -4,
+    });
+    gsap.to(camera.value.rotation, {
+      duration: 2,
+      x: -3.141592653589793,
+      y: -0.7188299996216245,
+      z: -3.141592653589793,
+    });
+    gsap.to(controls.value.target, {
+      duration: 2,
+      x: 0,
+      y: 0,
+      z: 0,
+    });
+  } else if (viewSelected.value === "front") {
+    gsap.to(camera.value.position, {
+      duration: 2,
+      x: 0,
+      y: 0,
+      z: 4,
+    });
+    gsap.to(camera.value.rotation, {
+      duration: 2,
+      x: 0,
+      y: 0,
+      z: 0,
+    });
+    gsap.to(controls.value.target, {
+      duration: 2,
+      x: 0,
+      y: 0,
+      z: 0,
+    });
+  } else if (viewSelected.value === "bottom") {
+    gsap.to(camera.value.position, {
+      duration: 2,
+      x: 0,
+      y: -4,
+      z: 0,
+    });
+    gsap.to(camera.value.rotation, {
+      duration: 2,
+      x: -1.5707963267948966,
+      y: 0,
+      z: 0,
+    });
+    gsap.to(controls.value.target, {
+      duration: 2,
+      x: 0,
+      y: 0,
+      z: 0,
+    });
+  }
+}
+
+let exposedGltf = null;
+
 onMounted(() => {
   //DEBUG
   // const gui = new GUI();
@@ -42,10 +206,11 @@ onMounted(() => {
         // Update loadingBarElement
         loadingBarElement.classList.add("ended");
         loadingBarElement.style.transform = "";
+        showElements.value = true;
       }, 500);
       window.setTimeout(() => {
         sceneReady = true;
-      }, 2000);
+      }, 1000);
     },
 
     // Progress
@@ -122,90 +287,130 @@ onMounted(() => {
   //LDR
 
   const environmentMap = textureLoader.load(
-    "/textures/environmentMaps/hdri/cyberpunk4.webp"
+    "/textures/environmentMaps/hdri/lab.webp"
   );
   environmentMap.mapping = THREE.EquirectangularReflectionMapping;
   environmentMap.colorSpace = THREE.SRGBColorSpace;
   scene.background = environmentMap;
   scene.environment = environmentMap;
 
-  debugObject.envMapIntensity = 2.5;
+  debugObject.envMapIntensity = 0.5;
 
   /**
    * Models
    */
 
-  gltfLoader.load("/models/Thermometer/thermometer.gltf", (gltf) => {
-    gltf.scene.scale.set(2.5, 2.5, 2.5);
-    gltf.scene.rotation.y = Math.PI * 0.5;
+  gltfLoader.load("/models/Headphones/glTF/headphones.gltf", (gltf) => {
+    gltf.scene.scale.set(1, 1, 1);
+
     scene.add(gltf.scene);
 
     updateAllMaterials();
-  });
 
-  //RAYCASTER
-  // const raycaster = new THREE.Raycaster();
+    //axis helper
+    // const axesHelper = new THREE.AxesHelper(5);
+    // scene.add(axesHelper);
+
+    //get each children of the scene position and add them to the gui
+    // let objects = scene.children[3].children;
+    // for (let i = 0; i < objects.length; i++) {
+    //   const positionFolder = gui.addFolder(`${objects[i].name} Position`);
+
+    //   positionFolder
+    //     .add(objects[i].position, "x")
+    //     .min(-Math.PI)
+    //     .max(Math.PI)
+    //     .step(0.001)
+    //     .name("X");
+
+    //   positionFolder
+    //     .add(objects[i].position, "y")
+    //     .min(-Math.PI)
+    //     .max(Math.PI)
+    //     .step(0.001)
+    //     .name("Y");
+
+    //   positionFolder
+    //     .add(objects[i].position, "z")
+    //     .min(-Math.PI)
+    //     .max(Math.PI)
+    //     .step(0.001)
+    //     .name("Z");
+    // }
+    exposedGltf = gltf;
+    let leather = exposedGltf.scene.children.find(
+      (obj) => obj.name === "Around002"
+    );
+    leather.material.color.r = 0.8;
+    leather.material.color.g = 0.8;
+    leather.material.color.b = 0.8;
+
+    console.log(exposedGltf.scene.children);
+  });
 
   //POINTS
 
   points.value = [
     {
-      position: new THREE.Vector3(-0.47449, 0.73983, -0.38845),
+      position: new THREE.Vector3(-0.81869, -1.42102, -1.16288),
       element: document.querySelector(".point-0"),
     },
     {
-      position: new THREE.Vector3(-0.81869, 1.10066, -0.47449),
+      position: new THREE.Vector3(-0.81869, 1.76275, -0.47449),
       element: document.querySelector(".point-1"),
     },
     {
-      position: new THREE.Vector3(-1.50707, 1.93485, -0.90473),
+      position: new THREE.Vector3(-0.90473, -2.10941, -0.73264),
       element: document.querySelector(".point-2"),
     },
     {
-      position: new THREE.Vector3(0.55808, -1.16288, 0.38598),
+      position: new THREE.Vector3(0.47203, -1.07683, -0.90473),
       element: document.querySelector(".point-3"),
     },
     {
-      position: new THREE.Vector3(2.0209, -2.53965, 1.59066),
+      position: new THREE.Vector3(2.0209, 0.38598, -0.81879),
       element: document.querySelector(".point-4"),
     },
   ];
 
   //GUI DEBUG FOR POINTS POSITION
 
-  // for (let i = 0; i < points.value.length; i++) {
-  //   gui
-  //     .add(points.value[i].position, "x")
-  //     .min(-3)
-  //     .max(4)
-  //     .step(0.00001)
-  //     .name("Point " + (i + 1) + " - X axis");
+  /**for (let i = 0; i < points.value.length; i++) {
+    gui
+      .add(points.value[i].position, "x")
+      .min(-3)
+      .max(4)
+      .step(0.00001)
+      .name("Point " + (i + 1) + " - X axis");
 
-  //   gui
-  //     .add(points.value[i].position, "y")
-  //     .min(-3)
-  //     .max(4)
-  //     .step(0.00001)
-  //     .name("Point " + (i + 1) + " - Y axis");
+    gui
+      .add(points.value[i].position, "y")
+      .min(-3)
+      .max(4)
+      .step(0.00001)
+      .name("Point " + (i + 1) + " - Y axis");
 
-  //   gui
-  //     .add(points.value[i].position, "z")
-  //     .min(-3)
-  //     .max(4)
-  //     .step(0.00001)
-  //     .name("Point " + (i + 1) + " - Z axis");
-  // }
+    gui
+      .add(points.value[i].position, "z")
+      .min(-3)
+      .max(4)
+      .step(0.00001)
+      .name("Point " + (i + 1) + " - Z axis");
+  }*/
 
   /**
    * Lights
    */
-  const directionalLight = new THREE.DirectionalLight("#ffffff", 3);
+  const directionalLight = new THREE.DirectionalLight("#fffdfa", 2);
   directionalLight.castShadow = true;
   directionalLight.shadow.camera.far = 15;
   directionalLight.shadow.mapSize.set(1024, 1024);
   directionalLight.shadow.normalBias = 0.05;
   directionalLight.position.set(0.25, 3, -2.25);
   scene.add(directionalLight);
+
+  // const ambientLight = new THREE.AmbientLight("#fffdfa", 4);
+  // scene.add(ambientLight);
 
   /**
    * Sizes
@@ -239,12 +444,23 @@ onMounted(() => {
     0.1,
     100
   );
-  camera.value.position.set(4, 1, -4);
+  camera.value.position.set(-3.5, 0, -4);
   scene.add(camera.value);
+
+  //gui on camera
+  // gui.add(camera.value.position, "x").min(-10).max(10).step(0.001).name("X");
+  // gui.add(camera.value.position, "y").min(-10).max(10).step(0.001).name("Y");
+  // gui.add(camera.value.position, "z").min(-10).max(10).step(0.001).name("Z");
 
   //CONTROLS
   controls.value = new OrbitControls(camera.value, canvas);
   controls.value.enableDamping = true;
+  // Disable panning
+  controls.value.enablePan = false;
+  controls.value.maxDistance = 6;
+  controls.value.minDistance = 2;
+
+  controls.value.update();
 
   /**
    * Renderer
@@ -309,47 +525,86 @@ onMounted(() => {
 
     // Call tick again on the next frame
     window.requestAnimationFrame(tick);
+    // Update Stats
   };
 
   tick();
 
-  console.log(scene.children[2]);
-});
-let zoomToggle = ref(false);
-function lookAtPoints(x, y, z) {
-  const target = new THREE.Vector3(x, y, z);
-  // controls.value.target = target;
-  gsap.to(controls.value.target, {
-    duration: 2,
-    x: target.x,
-    y: target.y,
-    z: target.z,
+  window.addEventListener("keydown", (event) => {
+    // console.log(
+    //   "position " + camera.value.position.x,
+    //   camera.value.position.y,
+    //   camera.value.position.z
+    // );
+    // console.log(
+    //   "rotation " + camera.value.rotation.x,
+    //   camera.value.rotation.y,
+    //   camera.value.rotation.z
+    // );
+    // console.log(
+    //   "target " + controls.value.target.x,
+    //   controls.value.target.y,
+    //   controls.value.target.z
+    // );
+    // console.log("zoomToggle " + zoomToggle.value);
   });
+});
 
-  if (zoomToggle.value === false) {
-    gsap.to(camera.value.position, {
-      duration: 2,
-      x: x / 2,
-      y: y,
-      z: Math.abs(z) / -2,
-    });
+//OBJECT PARTS
 
-    zoomToggle.value = true;
-  } else if (zoomToggle.value === true) {
-    gsap.to(camera.value.position, {
-      duration: 2,
-      x: 4,
-      y: 1,
-      z: -4,
-    });
-    zoomToggle.value = false;
-  }
+function customColor(color) {
+  let back = exposedGltf.scene.children.find((obj) => obj.name === "Back001");
+  let leather = exposedGltf.scene.children.find(
+    (obj) => obj.name === "Around002"
+  );
+  back.material.color.r = color[0];
+  back.material.color.g = color[1];
+  back.material.color.b = color[2];
+
+  leather.material.color.r = color[0];
+  leather.material.color.g = color[1];
+  leather.material.color.b = color[2];
+
+  console.log(exposedGltf.scene.children);
+}
+
+function metalType(value) {
+  let metal = [
+    exposedGltf.scene.children.find((obj) => obj.name === "MetalDetail"),
+    exposedGltf.scene.children.find((obj) => obj.name === "Metal003"),
+    exposedGltf.scene.children.find((obj) => obj.name === "Metal002"),
+    exposedGltf.scene.children.find((obj) => obj.name === "V"),
+  ];
+
+  metal.forEach((obj) => {
+    obj.material.color.r = value[0];
+    obj.material.color.g = value[1];
+    obj.material.color.b = value[2];
+  });
 }
 </script>
 <template>
-  <canvas class="webgl"></canvas>
+  <canvas
+    class="webgl"
+    @mousedown="showElements = false"
+    @mouseup="showElements = true"
+  ></canvas>
+  <div class="lateral-stripes" v-if="showElements">
+    <span
+      v-for="stripe in 3"
+      :key="stripe"
+      class="lateral-stripes__stripe"
+      :class="{
+        'lateral-stripes__stripe--selected': selectedStripe === stripe,
+      }"
+      @click="changeView(stripe)"
+    ></span>
+  </div>
+  <button class="buy-button button-primary" v-if="showElements">
+    Add to cart
+  </button>
   <div
-    @click="lookAtPoints(0, 0, 0)"
+    @click="resetZoom()"
     class="dezoom"
     :class="{ dezoomVisible: zoomToggle === true }"
   ></div>
@@ -357,6 +612,8 @@ function lookAtPoints(x, y, z) {
 
   <div
     class="point point-3"
+    @mouseover="showElements = false"
+    @mouseleave="showElements = true"
     @click="
       (zoomToggle = false),
         lookAtPoints(
@@ -367,18 +624,14 @@ function lookAtPoints(x, y, z) {
     "
   >
     <div class="label">
-      <img
-        class="label__icon"
-        src="@/assets/icons/self_improvement.svg"
-        alt="icone"
-      />
+      <img class="label__icon" src="@/assets/icons/add.svg" alt="icone" />
     </div>
-    <p class="text">
-      Flexible and soft probe, provides added comfort during insertion.
-    </p>
+    <p class="text">Electronics components, click to see the details.</p>
   </div>
   <div
     class="point point-4"
+    @mouseover="showElements = false"
+    @mouseleave="showElements = true"
     @click="
       (zoomToggle = false),
         lookAtPoints(
@@ -389,18 +642,18 @@ function lookAtPoints(x, y, z) {
     "
   >
     <div class="label">
-      <img
-        class="label__icon"
-        src="@/assets/icons/heat_pump_balance.svg"
-        alt="icone"
-      />
+      <img class="label__icon" src="@/assets/icons/add.svg" alt="icone" />
     </div>
     <p class="text">
-      The tip, inserted into the rectum to accurately measure body temperature.
+      The high-quality hypoallergenic silicone conforms gently to the contours
+      of the head and ears, reducing pressure and discomfort during extended
+      use. This material is sweat and oil resistant.
     </p>
   </div>
   <div
     class="point point-2"
+    @mouseover="showElements = false"
+    @mouseleave="showElements = true"
     @click="
       (zoomToggle = false),
         lookAtPoints(
@@ -411,14 +664,17 @@ function lookAtPoints(x, y, z) {
     "
   >
     <div class="label">
-      <img class="label__icon" src="@/assets/icons/charger.svg" alt="icone" />
+      <img class="label__icon" src="@/assets/icons/add.svg" alt="icone" />
     </div>
     <p class="text">
-      Battery compartment, allows for quick and easy battery changes.
+      The high speed USB-C charging port offers a combination of ultra fast data
+      transfer and power delivery.
     </p>
   </div>
   <div
     class="point point-1"
+    @mouseover="showElements = false"
+    @mouseleave="showElements = true"
     @click="
       (zoomToggle = false),
         lookAtPoints(
@@ -429,19 +685,17 @@ function lookAtPoints(x, y, z) {
     "
   >
     <div class="label">
-      <img
-        class="label__icon"
-        src="@/assets/icons/power_settings_new.svg"
-        alt="icone"
-      />
+      <img class="label__icon" src="@/assets/icons/add.svg" alt="icone" />
     </div>
     <p class="text">
-      Power button, designed for easy manipulation during use to turn the device
-      on and off.
+      The headband is adjustable and padded for comfort. It provides the right
+      amount of pressure to keep the headset comfortably on the user's head.
     </p>
   </div>
   <div
     class="point point-0"
+    @mouseover="showElements = false"
+    @mouseleave="showElements = true"
     @click="
       lookAtPoints(
         points[0].position.x,
@@ -451,15 +705,58 @@ function lookAtPoints(x, y, z) {
     "
   >
     <div class="label">
-      <img
-        class="label__icon"
-        src="@/assets/icons/browse_activity.svg"
-        alt="icone"
-      />
+      <img class="label__icon" src="@/assets/icons/add.svg" alt="icone" />
     </div>
     <p class="text">
-      The display, shows the temperature reading by providing a clear and
-      easy-to-read numerical value.
+      The leather cushion provides comfort and help isolate external noise for
+      better audio quality.
     </p>
   </div>
+
+  <AsideMenu @customColor="customColor" @metalType="metalType" />
 </template>
+
+<style lang="scss">
+canvas {
+  cursor: grab;
+}
+
+.lateral-stripes {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 1;
+  width: 60px;
+  height: fit-content;
+
+  &__stripe {
+    width: 100%;
+    height: 1rem;
+    background-color: $primary-color;
+    transition: background-color 0.3s;
+    box-shadow: $shadow;
+    cursor: pointer;
+    animation: fading 1s;
+
+    &--selected {
+      background-color: $text-color;
+    }
+  }
+}
+
+.buy-button {
+  position: absolute;
+  bottom: 2rem;
+  right: 0;
+  left: 0;
+  margin: auto;
+  z-index: 1;
+  max-width: 300px;
+  animation: fading 1s;
+}
+</style>
