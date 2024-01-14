@@ -154,6 +154,10 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
 
+  @media (min-width: $big-tablet-screen) {
+    right: 0;
+  }
+
   &__menu {
     height: 100px;
     border-radius: 0;
