@@ -3,6 +3,8 @@ import { ref, onMounted } from "vue";
 const toggleMenu = ref(false);
 const colorInput = ref(null);
 const customColor = ref([0.109, 0.58, 0.166]);
+const selectedColor = ref("white");
+const selectedMetal = ref("gold");
 
 function hexToRgb(hex) {
   let r = parseInt(hex.slice(1, 3), 16);
@@ -43,29 +45,55 @@ onMounted(() => {
         <h2 class="aside__links__section__title">Colors</h2>
         <button
           class="aside__links__section__link"
-          @click="emitColor([0.8, 0.8, 0.8])"
+          @click="emitColor([0.8, 0.8, 0.8]), (selectedColor = 'white')"
+          :class="{
+            'aside__links__section__link--selected': selectedColor === 'white',
+          }"
         >
           <span id="white" class="aside__links__section__link__icon"></span
           >White</button
         ><button
           class="aside__links__section__link"
-          @click="emitColor([0, 0, 0.25])"
+          @click="emitColor([0, 0, 0.25]), (selectedColor = 'navy')"
+          :class="{
+            'aside__links__section__link--selected': selectedColor === 'navy',
+          }"
         >
           <span id="navy" class="aside__links__section__link__icon"></span
           >Navy</button
         ><button
           class="aside__links__section__link"
-          @click="emitColor([0.2, 0, 0])"
+          @click="emitColor([0.2, 0, 0]), (selectedColor = 'red')"
+          :class="{
+            'aside__links__section__link--selected': selectedColor === 'red',
+          }"
         >
           <span id="red" class="aside__links__section__link__icon"></span>Red
         </button>
         <button
           class="aside__links__section__link"
-          @click="emitColor([0, 0, 0])"
+          @click="emitColor([0, 0, 0]), (selectedColor = 'black')"
+          :class="{
+            'aside__links__section__link--selected': selectedColor === 'black',
+          }"
         >
-          <span id="black" class="aside__links__section__link__icon"></span
+          <span
+            id="black"
+            class="aside__links__section__link__icon"
+            :class="{
+              'aside__links__section__link--selected':
+                selectedColor === 'black',
+            }"
+          ></span
           >Black</button
-        ><button class="aside__links__section__link" @click="openColorPicker()">
+        ><button
+          class="aside__links__section__link"
+          @click="openColorPicker(), (selectedColor = 'custom')"
+          @tap="openColorPicker(), (selectedColor = 'custom')"
+          :class="{
+            'aside__links__section__link--selected': selectedColor === 'custom',
+          }"
+        >
           <input
             type="color"
             ref="colorInput"
@@ -83,20 +111,31 @@ onMounted(() => {
         <h2 class="aside__links__section__title">Metals</h2>
         <button
           class="aside__links__section__link"
-          @click="emitMetalType([0.67, 0.57, 0.189])"
+          @click="emitMetalType([0.67, 0.57, 0.189]), (selectedMetal = 'gold')"
+          :class="{
+            'aside__links__section__link--selected': selectedMetal === 'gold',
+          }"
         >
           <span id="gold" class="aside__links__section__link__icon"></span>Gold
         </button>
         <button
           class="aside__links__section__link"
-          @click="emitMetalType([0.6, 0.6, 0.6])"
+          @click="emitMetalType([0.6, 0.6, 0.6]), (selectedMetal = 'silver')"
+          :class="{
+            'aside__links__section__link--selected': selectedMetal === 'silver',
+          }"
         >
           <span id="silver" class="aside__links__section__link__icon"></span
           >Silver
         </button>
         <button
           class="aside__links__section__link"
-          @click="emitMetalType([0.105, 0.105, 0.105])"
+          @click="
+            emitMetalType([0.105, 0.105, 0.105]), (selectedMetal = 'onyx')
+          "
+          :class="{
+            'aside__links__section__link--selected': selectedMetal === 'onyx',
+          }"
         >
           <span id="onyx" class="aside__links__section__link__icon"></span>Onyx
         </button>
@@ -109,49 +148,48 @@ onMounted(() => {
   position: fixed;
   top: 0;
   bottom: 0;
-  right: 0;
+  right: 60px;
+  width: fit-content;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  background-color: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.5) 0%,
-    rgb(255, 255, 255) 100%
-  );
 
   &__menu {
     height: 100px;
     border-radius: 0;
     display: flex;
-    background-color: $base-color;
     justify-content: center;
     align-items: center;
     position: relative;
-    min-width: 137px;
+    background-color: rgb($base-color, 0.6);
+    backdrop-filter: blur(6px);
+    padding: 1rem;
 
     @media (min-width: $big-tablet-screen) {
-      min-width: 169px;
+      min-width: 220px;
     }
 
     &__icon {
-      width: 30px;
+      width: 47px;
       cursor: pointer;
     }
   }
 
   &__links {
+    background-color: rgb($base-color, 0.3);
+    backdrop-filter: blur(6px);
     display: flex;
     height: calc(100svh - 100px);
-    background: linear-gradient($primary-color, black);
-    padding: 1rem 0;
-    gap: 2rem;
-    height: calc(100svh - 100px);
+    padding: 1rem 0.5rem;
+    gap: 1rem;
     overflow-y: scroll;
     flex-direction: column;
+    align-items: center;
 
     @media (min-width: $big-tablet-screen) {
       flex-direction: row;
       padding: 1rem;
+      align-items: flex-start;
     }
 
     &__section {
@@ -164,7 +202,8 @@ onMounted(() => {
         font-size: 1.25rem;
         font-weight: $thick;
         color: $text-color;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
+        text-shadow: $text-shadow;
       }
 
       &__link {
@@ -173,9 +212,19 @@ onMounted(() => {
         align-items: center;
         flex-direction: column;
         gap: 0.5rem;
-        padding: 1rem 0;
+        padding: 1rem;
         font-weight: $skinny-thick;
         color: $text-color;
+        font-size: 0.8rem;
+
+        @media (min-width: $big-tablet-screen) {
+          font-size: 1rem;
+        }
+
+        &--selected {
+          background-color: rgb($base-color, 0.2);
+          border-radius: $radius;
+        }
 
         & #white {
           background-color: white;
@@ -191,6 +240,14 @@ onMounted(() => {
         }
         & #rainbow {
           position: relative;
+          background-image: url("@/assets/icons/palette.svg");
+          background-size: 20px;
+          background-repeat: no-repeat;
+          background-position: center;
+
+          @media (min-width: $big-tablet-screen) {
+            background-size: 30px;
+          }
         }
         & #gold {
           background: linear-gradient(
@@ -227,11 +284,16 @@ onMounted(() => {
         }
 
         &__icon {
-          width: 47px;
-          height: 47px;
+          width: 30px;
+          height: 30px;
           border-radius: 50%;
-          border: 4px solid $secondary-color;
+          border: 2px solid $text-color;
           transition: transform 0.2s;
+
+          @media (min-width: $big-tablet-screen) {
+            width: 47px;
+            height: 47px;
+          }
 
           &:hover {
             transform: scale(1.1);

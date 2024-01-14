@@ -447,17 +447,12 @@ onMounted(() => {
   camera.value.position.set(-3.5, 0, -4);
   scene.add(camera.value);
 
-  //gui on camera
-  // gui.add(camera.value.position, "x").min(-10).max(10).step(0.001).name("X");
-  // gui.add(camera.value.position, "y").min(-10).max(10).step(0.001).name("Y");
-  // gui.add(camera.value.position, "z").min(-10).max(10).step(0.001).name("Z");
-
   //CONTROLS
   controls.value = new OrbitControls(camera.value, canvas);
   controls.value.enableDamping = true;
   // Disable panning
   controls.value.enablePan = false;
-  controls.value.maxDistance = 6;
+  controls.value.maxDistance = 5;
   controls.value.minDistance = 2;
 
   controls.value.update();
@@ -758,5 +753,6 @@ canvas {
   z-index: 1;
   max-width: 300px;
   animation: fading 1s;
+  text-transform: uppercase;
 }
 </style>

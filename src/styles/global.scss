@@ -95,7 +95,7 @@ input[type="number"] {
   backface-visibility: hidden;
   transform: translateZ(0);
   -webkit-font-smoothing: subpixel-antialiased;
-  font-weight: 500 !important;
+  font-weight: $thick !important;
   font-family: "Custom" !important;
 
   &:hover {

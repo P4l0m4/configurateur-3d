@@ -8,15 +8,19 @@
 .footer {
   display: flex;
   justify-content: flex-end;
-  padding: 1rem;
+  padding: 0.5rem;
   gap: 1rem;
   position: absolute;
   width: 100%;
   bottom: 0;
   right: 0;
+  left: 0;
+  margin: auto;
 
   @media (min-width: $big-tablet-screen) {
-    right: 190px;
+    right: 220px;
+    padding: 1rem;
+    margin: inherit;
   }
 
   &__link {
