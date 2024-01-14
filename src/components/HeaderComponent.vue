@@ -5,12 +5,12 @@
       src="@/assets/images/tacky-sound-logo.svg"
       alt="logo"
     />
-    <nav class="header__nav">
+    <!-- <nav class="header__nav">
       <NuxtLink to="/" class="header__nav__link" exact>Men</NuxtLink>
       <NuxtLink to="/" class="header__nav__link" exact>Women</NuxtLink>
       <NuxtLink to="/" class="header__nav__link" exact>Kids</NuxtLink>
       <NuxtLink to="/" class="header__nav__link" exact>Customize</NuxtLink>
-    </nav>
+    </nav> -->
   </header>
 </template>
 <style lang="scss">

@@ -13,7 +13,11 @@
   position: absolute;
   width: 100%;
   bottom: 0;
-  right: 100px;
+  right: 0;
+
+  @media (min-width: $big-tablet-screen) {
+    right: 170px;
+  }
 
   &__link {
     font-size: 0.75rem;

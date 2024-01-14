@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
+const toggleMenu = ref(false);
 const colorInput = ref(null);
 const customColor = ref([0.109, 0.58, 0.166]);
 
@@ -21,57 +22,85 @@ function emitColor(color) {
 function emitMetalType(value) {
   emit("metalType", value);
 }
+
+onMounted(() => {
+  if (window.innerWidth > 1024) {
+    toggleMenu.value = true;
+  }
+});
 </script>
 <template>
   <aside class="aside">
-    <button class="aside__menu">
+    <button class="aside__menu" @click="toggleMenu = !toggleMenu">
       <img
         class="aside__menu__icon"
         src="@/assets/icons/stripes.svg"
         alt="stripes"
       />
     </button>
-    <div class="aside__links">
-      <button class="aside__links__link" @click="emitColor([0.8, 0.8, 0.8])">
-        <span id="white" class="aside__links__link__icon"></span>White</button
-      ><button class="aside__links__link" @click="emitColor([0, 0, 0.25])">
-        <span id="navy" class="aside__links__link__icon"></span>Navy</button
-      ><button class="aside__links__link" @click="emitColor([0.2, 0, 0])">
-        <span id="red" class="aside__links__link__icon"></span>Red
-      </button>
-      <button class="aside__links__link" @click="emitColor([0, 0, 0])">
-        <span id="black" class="aside__links__link__icon"></span>Black</button
-      ><button class="aside__links__link" @click="openColorPicker()">
-        <input
-          type="color"
-          ref="colorInput"
-          v-model="customColor"
-          @input="emitColor(hexToRgb(customColor))"
-        /><span
-          id="rainbow"
-          class="aside__links__link__icon"
-          :style="`background-color: ${hexToRgb(customColor)}`"
-        ></span
-        >Custom
-      </button>
-      <button
-        class="aside__links__link"
-        @click="emitMetalType([0.67, 0.57, 0.189])"
-      >
-        <span id="gold" class="aside__links__link__icon"></span>Gold
-      </button>
-      <button
-        class="aside__links__link"
-        @click="emitMetalType([0.6, 0.6, 0.6])"
-      >
-        <span id="silver" class="aside__links__link__icon"></span>Silver
-      </button>
-      <button
-        class="aside__links__link"
-        @click="emitMetalType([0.105, 0.105, 0.105])"
-      >
-        <span id="onyx" class="aside__links__link__icon"></span>Onyx
-      </button>
+    <div class="aside__links" v-if="toggleMenu">
+      <div class="aside__links__section">
+        <h2 class="aside__links__section__title">Colors</h2>
+        <button
+          class="aside__links__section__link"
+          @click="emitColor([0.8, 0.8, 0.8])"
+        >
+          <span id="white" class="aside__links__section__link__icon"></span
+          >White</button
+        ><button
+          class="aside__links__section__link"
+          @click="emitColor([0, 0, 0.25])"
+        >
+          <span id="navy" class="aside__links__section__link__icon"></span
+          >Navy</button
+        ><button
+          class="aside__links__section__link"
+          @click="emitColor([0.2, 0, 0])"
+        >
+          <span id="red" class="aside__links__section__link__icon"></span>Red
+        </button>
+        <button
+          class="aside__links__section__link"
+          @click="emitColor([0, 0, 0])"
+        >
+          <span id="black" class="aside__links__section__link__icon"></span
+          >Black</button
+        ><button class="aside__links__section__link" @click="openColorPicker()">
+          <input
+            type="color"
+            ref="colorInput"
+            v-model="customColor"
+            @input="emitColor(hexToRgb(customColor))"
+          /><span
+            id="rainbow"
+            class="aside__links__section__link__icon"
+            :style="`background-color: ${hexToRgb(customColor)}`"
+          ></span
+          >Custom
+        </button>
+      </div>
+      <div class="aside__links__section">
+        <h2 class="aside__links__section__title">Metals</h2>
+        <button
+          class="aside__links__section__link"
+          @click="emitMetalType([0.67, 0.57, 0.189])"
+        >
+          <span id="gold" class="aside__links__section__link__icon"></span>Gold
+        </button>
+        <button
+          class="aside__links__section__link"
+          @click="emitMetalType([0.6, 0.6, 0.6])"
+        >
+          <span id="silver" class="aside__links__section__link__icon"></span
+          >Silver
+        </button>
+        <button
+          class="aside__links__section__link"
+          @click="emitMetalType([0.105, 0.105, 0.105])"
+        >
+          <span id="onyx" class="aside__links__section__link__icon"></span>Onyx
+        </button>
+      </div>
     </div>
   </aside>
 </template>
@@ -97,8 +126,12 @@ function emitMetalType(value) {
     background-color: $base-color;
     justify-content: center;
     align-items: center;
-    width: 100px;
     position: relative;
+    min-width: 137px;
+
+    @media (min-width: $big-tablet-screen) {
+      min-width: 169px;
+    }
 
     &__icon {
       width: 30px;
@@ -107,86 +140,103 @@ function emitMetalType(value) {
   }
 
   &__links {
-    position: absolute;
-    right: 0;
-    top: 100px;
     display: flex;
-    flex-direction: column;
-    width: 100px;
     height: calc(100svh - 100px);
     background: linear-gradient($primary-color, black);
-    padding: 1rem;
+    padding: 1rem 0;
+    gap: 2rem;
     height: calc(100svh - 100px);
     overflow-y: scroll;
+    flex-direction: column;
 
-    &__link {
+    @media (min-width: $big-tablet-screen) {
+      flex-direction: row;
+      padding: 1rem;
+    }
+
+    &__section {
       display: flex;
-      justify-content: center;
-      align-items: center;
       flex-direction: column;
-      gap: 0.5rem;
-      padding: 1rem 0;
-      font-weight: $skinny-thick;
-      color: $text-color;
-      & #white {
-        background-color: white;
-      }
-      & #navy {
-        background-color: rgb(0, 0, 92);
-      }
-      & #red {
-        background-color: rgb(92, 0, 18);
-      }
-      & #black {
-        background-color: rgb(0, 0, 0);
-      }
-      & #rainbow {
-        position: relative;
-      }
-      & #gold {
-        background: linear-gradient(
-          45deg,
-          rgba(255, 219, 101) 0%,
-          rgb(255, 255, 255) 50%,
-          rgba(255, 219, 101) 54%
-        );
-      }
-      & #silver {
-        background: linear-gradient(
-          45deg,
-          rgb(106, 106, 106) 0%,
-          rgb(255, 255, 255) 50%,
-          rgb(106, 106, 106) 54%
-        );
-      }
-      & #onyx {
-        background: linear-gradient(
-          45deg,
-          rgb(39, 39, 39) 0%,
-          rgb(255, 255, 255) 50%,
-          rgb(39, 39, 39) 54%
-        );
+      align-items: center;
+      width: fit-content;
+
+      &__title {
+        font-size: 1.25rem;
+        font-weight: $thick;
+        color: $text-color;
+        margin-bottom: 0.5rem;
       }
 
-      & input[type="color"] {
-        width: 0;
-        height: 0;
-        opacity: 0;
-        inset: 0;
-        margin: auto;
-        position: absolute;
-      }
+      &__link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem 0;
+        font-weight: $skinny-thick;
+        color: $text-color;
 
-      &__icon {
-        width: 47px;
-        height: 47px;
-        border-radius: 50%;
-        border: 4px solid $secondary-color;
-        transition: transform 0.2s;
+        & #white {
+          background-color: white;
+        }
+        & #navy {
+          background-color: rgb(0, 0, 92);
+        }
+        & #red {
+          background-color: rgb(92, 0, 18);
+        }
+        & #black {
+          background-color: rgb(0, 0, 0);
+        }
+        & #rainbow {
+          position: relative;
+        }
+        & #gold {
+          background: linear-gradient(
+            45deg,
+            rgba(255, 219, 101) 0%,
+            rgb(255, 255, 255) 50%,
+            rgba(255, 219, 101) 54%
+          );
+        }
+        & #silver {
+          background: linear-gradient(
+            45deg,
+            rgb(106, 106, 106) 0%,
+            rgb(255, 255, 255) 50%,
+            rgb(106, 106, 106) 54%
+          );
+        }
+        & #onyx {
+          background: linear-gradient(
+            45deg,
+            rgb(39, 39, 39) 0%,
+            rgb(255, 255, 255) 50%,
+            rgb(39, 39, 39) 54%
+          );
+        }
 
-        &:hover {
-          transform: scale(1.1);
-          cursor: pointer;
+        & input[type="color"] {
+          width: 0;
+          height: 0;
+          opacity: 0;
+          inset: 0;
+          margin: auto;
+          position: absolute;
+        }
+
+        &__icon {
+          width: 47px;
+          height: 47px;
+          border-radius: 50%;
+          border: 4px solid $secondary-color;
+          transition: transform 0.2s;
+
+          &:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+          }
         }
       }
     }
