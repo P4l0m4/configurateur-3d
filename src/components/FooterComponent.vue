@@ -16,7 +16,7 @@
   right: 0;
 
   @media (min-width: $big-tablet-screen) {
-    right: 170px;
+    right: 190px;
   }
 
   &__link {
