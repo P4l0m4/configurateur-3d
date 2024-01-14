@@ -301,7 +301,11 @@ onMounted(() => {
    */
 
   gltfLoader.load("/models/Headphones/glTF/headphones.gltf", (gltf) => {
-    gltf.scene.scale.set(1, 1, 1);
+    gltf.scene.scale.set(0.8, 0.8, 0.8);
+
+    if (window.innerWidth > 768) {
+      gltf.scene.scale.set(1, 1, 1);
+    }
 
     scene.add(gltf.scene);
 
