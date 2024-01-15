@@ -15,6 +15,7 @@ function hexToRgb(hex) {
 
 function openColorPicker() {
   colorInput.value.click();
+  selectedColor.value = "custom";
 }
 const emit = defineEmits(["customColor"], ["metalType"]);
 //EMIT SELECTED COLOR TO PARENT COMPONENT
@@ -88,8 +89,7 @@ onMounted(() => {
           >Black</button
         ><button
           class="aside__links__section__link"
-          @click="openColorPicker(), (selectedColor = 'custom')"
-          @tap="openColorPicker(), (selectedColor = 'custom'), alert('test')"
+          @click="openColorPicker"
           :class="{
             'aside__links__section__link--selected': selectedColor === 'custom',
           }"
