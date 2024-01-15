@@ -595,6 +595,7 @@ function metalType(value) {
     @mouseover="showElements = false"
     @mouseleave="showElements = true"
     @touchstart="showElements = false"
+    @touchmove="showElements = false"
     @touchend="showElements = true"
     @click="
       (zoomToggle = false),
