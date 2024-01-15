@@ -218,6 +218,7 @@ onMounted(() => {
         font-weight: $skinny-thick;
         color: $text-color;
         font-size: 0.8rem;
+        position: relative;
 
         @media (min-width: $big-tablet-screen) {
           font-size: 1rem;
@@ -242,7 +243,6 @@ onMounted(() => {
           background-color: rgb(0, 0, 0);
         }
         & #rainbow {
-          position: relative;
           background-image: url("@/assets/icons/palette.svg");
           background-size: 20px;
           background-repeat: no-repeat;
@@ -282,7 +282,8 @@ onMounted(() => {
 
         & input[type="color"] {
           width: 40px;
-          height: 40px;
+          height: 60px;
+          border-radius: 50%;
           opacity: 0;
           inset: 0;
           margin: auto;
