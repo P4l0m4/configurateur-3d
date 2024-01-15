@@ -90,6 +90,7 @@ onMounted(() => {
         ><button
           class="aside__links__section__link"
           @click="openColorPicker"
+          @touchstart="openColorPicker"
           :class="{
             'aside__links__section__link--selected': selectedColor === 'custom',
           }"
@@ -294,6 +295,7 @@ onMounted(() => {
           border-radius: 50%;
           border: 2px solid $text-color;
           transition: transform 0.2s;
+          cursor: pointer;
 
           @media (min-width: $big-tablet-screen) {
             width: 47px;
@@ -302,7 +304,6 @@ onMounted(() => {
 
           &:hover {
             transform: scale(1.1);
-            cursor: pointer;
           }
         }
       }
