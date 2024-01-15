@@ -167,7 +167,6 @@ onMounted(() => {
 
     @media (min-width: $big-tablet-screen) {
       min-width: 220px;
-
       cursor: pointer;
     }
 
@@ -280,8 +279,8 @@ onMounted(() => {
         }
 
         & input[type="color"] {
-          width: 0;
-          height: 0;
+          width: 1px;
+          height: 1px;
           opacity: 0;
           inset: 0;
           margin: auto;

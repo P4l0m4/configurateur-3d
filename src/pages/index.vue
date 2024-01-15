@@ -594,6 +594,8 @@ function metalType(value) {
     class="point point-3"
     @mouseover="showElements = false"
     @mouseleave="showElements = true"
+    @touchstart="showElements = false"
+    @touchend="showElements = true"
     @click="
       (zoomToggle = false),
         lookAtPoints(
