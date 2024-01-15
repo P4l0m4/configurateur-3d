@@ -51,7 +51,7 @@ onMounted(() => {
           }"
         >
           <span id="white" class="aside__links__section__link__icon"></span
-          >White</button
+          >Pearl</button
         ><button
           class="aside__links__section__link"
           @click="emitColor([0, 0, 0.25]), (selectedColor = 'navy')"
@@ -253,26 +253,29 @@ onMounted(() => {
         }
         & #gold {
           background: linear-gradient(
-            45deg,
-            rgba(255, 219, 101) 0%,
+            70deg,
+            rgb(207, 173, 62) 0%,
+            rgba(207, 173, 62) 30%,
             rgb(255, 255, 255) 50%,
-            rgba(255, 219, 101) 54%
+            rgba(207, 173, 62) 70%
           );
         }
         & #silver {
           background: linear-gradient(
-            45deg,
+            70deg,
             rgb(106, 106, 106) 0%,
+            rgb(106, 106, 106) 30%,
             rgb(255, 255, 255) 50%,
-            rgb(106, 106, 106) 54%
+            rgb(106, 106, 106) 70%
           );
         }
         & #onyx {
           background: linear-gradient(
-            45deg,
+            70deg,
             rgb(39, 39, 39) 0%,
+            rgb(39, 39, 39) 30%,
             rgb(255, 255, 255) 50%,
-            rgb(39, 39, 39) 54%
+            rgb(39, 39, 39) 70%
           );
         }
 
