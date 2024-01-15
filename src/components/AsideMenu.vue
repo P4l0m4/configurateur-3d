@@ -281,8 +281,8 @@ onMounted(() => {
         }
 
         & input[type="color"] {
-          width: 1px;
-          height: 1px;
+          width: 40px;
+          height: 40px;
           opacity: 0;
           inset: 0;
           margin: auto;
