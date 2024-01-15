@@ -361,11 +361,11 @@ onMounted(() => {
         element: document.querySelector(".point-0"),
       },
       {
-        position: new THREE.Vector3(-0.81869, 1.4, -0.47449),
+        position: new THREE.Vector3(-0.81869, 1.7, -0.47449),
         element: document.querySelector(".point-1"),
       },
       {
-        position: new THREE.Vector3(-0.90473, -2.10941, -0.73264),
+        position: new THREE.Vector3(-0.90473, -1.8, -0.73264),
         element: document.querySelector(".point-2"),
       },
       {
