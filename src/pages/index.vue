@@ -593,6 +593,8 @@ function metalType(value) {
     class="webgl"
     @mousedown="showElements = false"
     @mouseup="showElements = true"
+    @touchmove="showElements = false"
+    @touchend="showElements = true"
   ></canvas>
   <div class="lateral-stripes" v-if="showElements">
     <span
