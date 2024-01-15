@@ -89,7 +89,7 @@ onMounted(() => {
         ><button
           class="aside__links__section__link"
           @click="openColorPicker(), (selectedColor = 'custom')"
-          @tap="openColorPicker(), (selectedColor = 'custom')"
+          @tap="openColorPicker(), (selectedColor = 'custom'), alert('test')"
           :class="{
             'aside__links__section__link--selected': selectedColor === 'custom',
           }"
