@@ -737,14 +737,14 @@ canvas {
   margin: auto;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
   z-index: 1;
   width: 60px;
   height: fit-content;
 
   &__stripe {
     width: 100%;
-    height: 1rem;
+    height: 1.5rem;
     background-color: $primary-color;
     transition: background-color 0.3s;
     box-shadow: $shadow;
