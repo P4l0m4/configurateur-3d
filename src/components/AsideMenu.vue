@@ -165,6 +165,7 @@ onMounted(() => {
     background-color: rgb($base-color, 0.6);
     backdrop-filter: blur(6px);
     padding: 1rem;
+    min-width: 94px;
 
     @media (min-width: $big-tablet-screen) {
       min-width: 220px;
