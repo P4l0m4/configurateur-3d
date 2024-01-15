@@ -354,28 +354,53 @@ onMounted(() => {
 
   //POINTS
 
-  points.value = [
-    {
-      position: new THREE.Vector3(-0.81869, -1.42102, -1.16288),
-      element: document.querySelector(".point-0"),
-    },
-    {
-      position: new THREE.Vector3(-0.81869, 1.76275, -0.47449),
-      element: document.querySelector(".point-1"),
-    },
-    {
-      position: new THREE.Vector3(-0.90473, -2.10941, -0.73264),
-      element: document.querySelector(".point-2"),
-    },
-    {
-      position: new THREE.Vector3(0.47203, -1.07683, -0.90473),
-      element: document.querySelector(".point-3"),
-    },
-    {
-      position: new THREE.Vector3(2.0209, 0.38598, -0.81879),
-      element: document.querySelector(".point-4"),
-    },
-  ];
+  if (window.innerWidth < 768) {
+    points.value = [
+      {
+        position: new THREE.Vector3(-0.81869, -1.42102, -1.16288),
+        element: document.querySelector(".point-0"),
+      },
+      {
+        position: new THREE.Vector3(-0.81869, 1.7, -0.47449),
+        element: document.querySelector(".point-1"),
+      },
+      {
+        position: new THREE.Vector3(-0.90473, -2.10941, -0.73264),
+        element: document.querySelector(".point-2"),
+      },
+      {
+        position: new THREE.Vector3(0.47203, -1.07683, -0.90473),
+        element: document.querySelector(".point-3"),
+      },
+      {
+        position: new THREE.Vector3(2.0209, 0.38598, -0.81879),
+        element: document.querySelector(".point-4"),
+      },
+    ];
+  } else if (window.innerWidth > 768) {
+    points.value = [
+      {
+        position: new THREE.Vector3(-0.81869, -1.42102, -1.16288),
+        element: document.querySelector(".point-0"),
+      },
+      {
+        position: new THREE.Vector3(-0.81869, 1.76275, -0.47449),
+        element: document.querySelector(".point-1"),
+      },
+      {
+        position: new THREE.Vector3(-0.90473, -2.10941, -0.73264),
+        element: document.querySelector(".point-2"),
+      },
+      {
+        position: new THREE.Vector3(0.47203, -1.07683, -0.90473),
+        element: document.querySelector(".point-3"),
+      },
+      {
+        position: new THREE.Vector3(2.0209, 0.38598, -0.81879),
+        element: document.querySelector(".point-4"),
+      },
+    ];
+  }
 
   //GUI DEBUG FOR POINTS POSITION
 
