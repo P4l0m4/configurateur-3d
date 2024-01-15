@@ -528,25 +528,6 @@ onMounted(() => {
   };
 
   tick();
-
-  window.addEventListener("keydown", (event) => {
-    // console.log(
-    //   "position " + camera.value.position.x,
-    //   camera.value.position.y,
-    //   camera.value.position.z
-    // );
-    // console.log(
-    //   "rotation " + camera.value.rotation.x,
-    //   camera.value.rotation.y,
-    //   camera.value.rotation.z
-    // );
-    // console.log(
-    //   "target " + controls.value.target.x,
-    //   controls.value.target.y,
-    //   controls.value.target.z
-    // );
-    // console.log("zoomToggle " + zoomToggle.value);
-  });
 });
 
 //OBJECT PARTS

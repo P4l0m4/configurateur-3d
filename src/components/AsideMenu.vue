@@ -148,15 +148,11 @@ onMounted(() => {
   position: fixed;
   top: 0;
   bottom: 0;
-  right: 60px;
+  right: 0;
   width: fit-content;
   z-index: 1;
   display: flex;
   flex-direction: column;
-
-  @media (min-width: $big-tablet-screen) {
-    right: 0;
-  }
 
   &__menu {
     height: 100px;
@@ -171,11 +167,12 @@ onMounted(() => {
 
     @media (min-width: $big-tablet-screen) {
       min-width: 220px;
+
+      cursor: pointer;
     }
 
     &__icon {
       width: 47px;
-      cursor: pointer;
     }
   }
 
@@ -223,6 +220,7 @@ onMounted(() => {
 
         @media (min-width: $big-tablet-screen) {
           font-size: 1rem;
+          cursor: pointer;
         }
 
         &--selected {
