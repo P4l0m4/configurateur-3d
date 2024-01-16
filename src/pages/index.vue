@@ -723,7 +723,11 @@ function metalType(value) {
     </p>
   </div>
 
-  <AsideMenu @customColor="customColor" @metalType="metalType" />
+  <AsideMenu
+    @customColor="customColor"
+    @metalType="metalType"
+    v-if="showElements"
+  />
 </template>
 
 <style lang="scss">
