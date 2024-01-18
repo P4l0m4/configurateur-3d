@@ -217,7 +217,7 @@ details > summary::-webkit-details-marker /* Safari */ {
 
 .label {
   z-index: 1;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba($base-color, 0.25);
   position: absolute;
   height: 40px;
   width: 40px;
@@ -266,6 +266,7 @@ details > summary::-webkit-details-marker /* Safari */ {
   transition: opacity 0.4s;
   pointer-events: none;
   text-shadow: black 0px 0px 2px;
+  background-color: rgba($base-color, 0.25);
 }
 
 .switch-environments {

@@ -13,6 +13,7 @@ const points = ref([]);
 const raycaster = new THREE.Raycaster();
 let sceneReady = false;
 const showElements = ref(false);
+
 // Scene
 const scene = new THREE.Scene();
 const controls = ref();
@@ -380,7 +381,7 @@ onMounted(() => {
   } else if (window.innerWidth > 768) {
     points.value = [
       {
-        position: new THREE.Vector3(-0.81869, -1.42102, -1.16288),
+        position: new THREE.Vector3(-0.81869, -0.5, -1),
         element: document.querySelector(".point-0"),
       },
       {
@@ -392,7 +393,7 @@ onMounted(() => {
         element: document.querySelector(".point-2"),
       },
       {
-        position: new THREE.Vector3(0.47203, -1.07683, -0.90473),
+        position: new THREE.Vector3(0.6, -0.6, -0.90473),
         element: document.querySelector(".point-3"),
       },
       {
@@ -722,7 +723,6 @@ function metalType(value) {
       better audio quality.
     </p>
   </div>
-
   <AsideMenu
     @customColor="customColor"
     @metalType="metalType"
@@ -731,6 +731,10 @@ function metalType(value) {
 </template>
 
 <style lang="scss">
+.pointNotHovered {
+  display: none !important;
+}
+
 canvas {
   cursor: grab;
 }
