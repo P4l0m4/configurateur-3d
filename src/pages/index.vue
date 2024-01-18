@@ -381,7 +381,7 @@ onMounted(() => {
   } else if (window.innerWidth > 768) {
     points.value = [
       {
-        position: new THREE.Vector3(-0.81869, -0.5, -1),
+        position: new THREE.Vector3(-0.84, -0.5, -1),
         element: document.querySelector(".point-0"),
       },
       {
