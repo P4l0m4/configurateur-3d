@@ -313,8 +313,8 @@ onMounted(() => {
     updateAllMaterials();
 
     //axis helper
-    const axesHelper = new THREE.AxesHelper(5);
-    scene.add(axesHelper);
+    // const axesHelper = new THREE.AxesHelper(5);
+    // scene.add(axesHelper);
 
     //get each children of the scene position and add them to the gui
     // let objects = scene.children[3].children;
