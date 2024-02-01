@@ -313,8 +313,8 @@ onMounted(() => {
     updateAllMaterials();
 
     //axis helper
-    // const axesHelper = new THREE.AxesHelper(5);
-    // scene.add(axesHelper);
+    const axesHelper = new THREE.AxesHelper(5);
+    scene.add(axesHelper);
 
     //get each children of the scene position and add them to the gui
     // let objects = scene.children[3].children;
@@ -374,7 +374,7 @@ onMounted(() => {
         element: document.querySelector(".point-3"),
       },
       {
-        position: new THREE.Vector3(2.0209, 0.38598, -0.81879),
+        position: new THREE.Vector3(1.3, 1.8, -0.5),
         element: document.querySelector(".point-4"),
       },
     ];
@@ -397,7 +397,7 @@ onMounted(() => {
         element: document.querySelector(".point-3"),
       },
       {
-        position: new THREE.Vector3(2.0209, 0.38598, -0.81879),
+        position: new THREE.Vector3(1.3, 1.8, -0.5),
         element: document.querySelector(".point-4"),
       },
     ];
