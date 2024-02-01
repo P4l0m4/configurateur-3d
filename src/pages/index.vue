@@ -22,7 +22,7 @@ const viewSelected = ref("custom");
 
 function lookAtPoints(x, y, z) {
   const target = new THREE.Vector3(x, y, z);
-  // controls.value.target = target;
+
   gsap.to(controls.value.target, {
     duration: 2,
     x: target.x,
@@ -42,8 +42,8 @@ function lookAtPoints(x, y, z) {
     gsap.to(camera.value.position, {
       duration: 2,
       x: 4,
-      y: 1,
-      z: -4,
+      y: 0,
+      z: -3,
     });
     zoomToggle.value = false;
   }
@@ -350,7 +350,7 @@ onMounted(() => {
     leather.material.color.g = 0.8;
     leather.material.color.b = 0.8;
 
-    console.log(exposedGltf.scene.children);
+    // console.log(exposedGltf.scene.children);
   });
 
   //POINTS
@@ -370,7 +370,7 @@ onMounted(() => {
         element: document.querySelector(".point-2"),
       },
       {
-        position: new THREE.Vector3(0.47203, -1.07683, -0.90473),
+        position: new THREE.Vector3(0.47203, -1.07, -0.90473),
         element: document.querySelector(".point-3"),
       },
       {
@@ -393,7 +393,7 @@ onMounted(() => {
         element: document.querySelector(".point-2"),
       },
       {
-        position: new THREE.Vector3(0.6, -0.6, -0.90473),
+        position: new THREE.Vector3(0.6, -0.3, -0.90473),
         element: document.querySelector(".point-3"),
       },
       {
@@ -439,9 +439,6 @@ onMounted(() => {
   directionalLight.position.set(0.25, 3, -2.25);
   scene.add(directionalLight);
 
-  // const ambientLight = new THREE.AmbientLight("#fffdfa", 4);
-  // scene.add(ambientLight);
-
   /**
    * Sizes
    */
@@ -483,7 +480,7 @@ onMounted(() => {
   // Disable panning
   controls.value.enablePan = false;
   controls.value.maxDistance = 5;
-  controls.value.minDistance = 2;
+  controls.value.minDistance = 2.5;
 
   controls.value.update();
 
@@ -588,6 +585,36 @@ function metalType(value) {
     obj.material.color.b = value[2];
   });
 }
+
+function animateElectronics() {
+  let electronics = [
+    exposedGltf.scene.children.find((obj) => obj.name === "Rotor002"),
+    exposedGltf.scene.children.find((obj) => obj.name === "Membrane"),
+    exposedGltf.scene.children.find((obj) => obj.name === "Glass002"),
+    exposedGltf.scene.children.find(
+      (obj) => obj.name === "CircularElectronics002"
+    ),
+  ];
+
+  electronics.forEach((obj) => {
+    console.log(obj.rotation);
+    setTimeout(() => {
+      gsap.to(obj.position, {
+        duration: 4,
+        x: obj.position.x - 1,
+        y: obj.position.y + 0.4,
+      });
+      gsap.to(obj.rotation, {
+        duration: 14,
+        x: obj.rotation.x + Math.PI / 4,
+      });
+    }, 2000);
+  });
+
+  // console.log(
+  //   exposedGltf.scene.children.find((obj) => obj.name === "Rotor002")
+  // );
+}
 </script>
 <template>
   <canvas
@@ -631,7 +658,8 @@ function metalType(value) {
           points[3].position.x,
           points[3].position.y,
           points[3].position.z
-        )
+        ),
+        animateElectronics()
     "
   >
     <div class="label">
@@ -639,6 +667,7 @@ function metalType(value) {
     </div>
     <p class="text">Electronics components, click to see the details.</p>
   </div>
+
   <div
     class="point point-4"
     @mouseover="showElements = false"

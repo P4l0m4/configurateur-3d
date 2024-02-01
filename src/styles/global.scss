@@ -22,6 +22,7 @@ body {
   background-color: $base-color;
   font-family: "Custom", sans-serif;
   color: $text-color;
+  touch-action: none;
 }
 
 a {
