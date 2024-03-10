@@ -595,9 +595,12 @@ function animateElectronics() {
       (obj) => obj.name === "CircularElectronics002"
     ),
   ];
-
+  let currentPositionX = 0;
+  let currentPositionY = 0;
   electronics.forEach((obj) => {
     console.log(obj.rotation);
+    currentPositionX = obj.position.x;
+    currentPositionY = obj.position.y;
     setTimeout(() => {
       gsap.to(obj.position, {
         duration: 4,
@@ -658,8 +661,7 @@ function animateElectronics() {
           points[3].position.x,
           points[3].position.y,
           points[3].position.z
-        ),
-        animateElectronics()
+        )
     "
   >
     <div class="label">
